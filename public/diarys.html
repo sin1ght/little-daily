@@ -1,0 +1,103 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="css/common.css"/>
+		<link rel="stylesheet" type="text/css" href="css/diarys.css"/>
+		
+		<script src="js/mui.min.js"></script>
+		<script src="js/jquery.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+	</head>
+
+	<body>
+		
+		
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">我的日记</h1>
+		</header>
+		
+		<div class="button">
+			<a href="diary-add.html">
+				<img src="img/add.png"/>
+			</a>
+		</div>
+		
+		<div class="mui-scroll-wrapper">
+		    <div class="mui-scroll" id="box">
+		        
+		        <div class="title">
+		        	{{items.length}}篇日记
+		        </div>
+		        
+		        <div class="content">
+		        	
+		        	<div class="item" v-for="item in items">
+		        		<div class="head">
+		        			<p class="mui-pull-left">{{item.time.slice(0,-3)}}</p>
+		        			<div class="img mui-pull-right">
+		        				<img :src="item.mood"/>
+		        				<img :src="item.weather"/>
+		        			</div>
+		        		</div>
+		        		<div style="clear: both;"></div>
+		        		<div class="title">
+		        			{{item.title}}
+		        		</div>
+		        		<div class="intro">
+		        			{{item.content.slice(0,35)+'...'}}
+		        		</div>
+		        	</div>
+		        	
+		        	
+		        	
+		        </div>
+		        
+		    </div>
+		</div>
+			
+		
+		
+	</body>
+	<script type="text/javascript">
+		header_height=$('header').height();
+		scroll_height=$('.mui-scroll-wrapper').height()-header_height;
+		
+		
+		mui('.mui-scroll-wrapper').scroll({
+		deceleration: 0.0005, //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+			indicators: false,
+		});
+		
+		$('.mui-scroll-wrapper').css('top',header_height+'px');
+		$('.mui-scroll-wrapper').css('height',scroll_height+'px');
+	</script>
+	<script src="js/vue.js"></script>
+	<script src="js/config.js"></script>
+	<script>
+		var box=new Vue({
+			el:'#box',
+			data:{
+				items:[]
+			}
+		});
+		
+		
+		$.get('/diary',function(res){
+			if(res.status){
+				box.$data.items=res.data;
+			}else{
+				mui.toast(res.data);
+			}
+		});
+		
+	</script>
+	
+</html>

@@ -1,0 +1,311 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		
+		<link rel="stylesheet" type="text/css" href="css/common.css"/>
+		<link rel="stylesheet" type="text/css" href="css/habit-add.css"/>
+		<script src="js/jquery.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+		
+	</head>
+
+	<body>
+		
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">新的习惯</h1>
+		    <a class="mui-icon mui-icon-checkmarkempty mui-pull-right" id="save"></a>
+		</header>
+		
+		<div class="mui-content">
+			<div class="head">
+				<div class="img-wrapper">
+					<img src="img/habit/5.png"/>
+				</div>
+				<input type="text" name=""  value="" placeholder="给习惯命名"/>
+			</div>	
+			
+			<div class="color-icon">
+				<p style="font-weight: bold;">挑选颜色和图标:</p>
+				<div class="color">
+					<div class="mui-scroll-wrapper">
+						<div class="mui-scroll">
+							<div id="color-box">
+								<div v-for="item in colors" class="item" v-bind:style="{background:item.color}" v-bind:data-color="item.color" v-on:click="color_choose">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="icon">
+					<div class="mui-scroll-wrapper">
+						<div class="mui-scroll">
+							<div id="icon-box">
+								<div class="item" v-for="item in icons">
+									<img :src="'img/habit/'+item+'.png'" @click="icon_choose"/>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="day-time">
+				<p style="font-weight: bold;">在一天的什么时候:</p>
+				<div class="mui-scroll-wrapper">
+				    <div class="mui-scroll">
+				        <div class="item active">
+				        	任意时间
+				        </div>
+				        <div class="item">
+				        	起床之后
+				        </div>
+				        <div class="item">
+				        	晨间习惯
+				        </div>
+				        <div class="item">
+				        	中午时分
+				        </div>
+				        <div class="item">
+				        	傍晚习惯
+				        </div>
+				        <div class="item">
+				        	晚间习惯
+				        </div>
+				        <div class="item">
+				        	睡前习惯
+				        </div>
+				    </div>
+				</div>
+				
+			</div>
+			
+			<div class="week-time">
+				<p style="font-weight: bold;">在一周的什么时候:</p>
+				<div class="mui-scroll-wrapper">
+				    <div class="mui-scroll">
+				        <div class="item active" data-value="1">
+				        	周一
+				        </div>
+				        <div class="item active" data-value="2">
+				        	周二
+				        </div>
+				        <div class="item active" data-value="3">
+				        	周三
+				        </div>
+				        <div class="item active" data-value="4">
+				        	周四
+				        </div>
+				        <div class="item active" data-value="5">
+				        	周五
+				        </div>
+				        <div class="item active" data-value="6">
+				        	周六
+				        </div>
+				        <div class="item active" data-value="0">
+				        	周日
+				        </div>
+				    </div>
+				</div>
+				
+			</div>
+			
+			
+			<div class="foot">
+				<p style="font-weight: bold;">写一句激励自己的话:</p>
+				<input type="text" name="" value="" placeholder="对自己说，每天都要加油!"/>
+			</div>
+		</div>
+		
+	</body>
+	<script>
+		/*
+		 * 颜色选择滚动
+		 * 
+		 */
+		
+		mui('.color-icon .color .mui-scroll-wrapper').scroll({
+			deceleration: 0.0005,
+			scrollY: false, //是否竖向滚动
+			scrollX: true, //是否横向滚动
+			bounce: true, //是否启用回弹
+			indicators: false
+		});
+		
+		var color_scroll_top=$('.color-icon >p').offset().top+$('.color-icon >p').height();
+		$('.color-icon .color .mui-scroll-wrapper').css({
+			'top':color_scroll_top,
+			'height':50+'px'
+		});
+		
+		/*
+		 * 图标选择滚动
+		 */
+		mui('.color-icon .icon .mui-scroll-wrapper').scroll({
+			deceleration: 0.0005,
+			scrollY: false, //是否竖向滚动
+			scrollX: true, //是否横向滚动
+			bounce: true, //是否启用回弹
+			indicators: false
+		});
+		
+		var icon_scroll_top=$('.color-icon .color').offset().top+$('.color-icon .color').height()+$('.color-icon .color .mui-scroll-wrapper').innerHeight();
+		$('.color-icon .icon .mui-scroll-wrapper').css({
+			'top':icon_scroll_top,
+			'height':60+'px'
+		});
+		
+		
+		/*
+		 * day time 选择
+		 */
+		var day_time_top=$('.color-icon .color .mui-scroll-wrapper').innerHeight()+$('.color-icon .icon .mui-scroll-wrapper').innerHeight()+20;
+		$('.day-time').css('margin-top',day_time_top);
+		
+		mui('.day-time .mui-scroll-wrapper').scroll({
+			deceleration: 0.0005,
+			scrollY: false, //是否竖向滚动
+			scrollX: true, //是否横向滚动
+			bounce: true, //是否启用回弹
+			indicators: false
+		});
+		
+		var day_time_scroll_top=$('.day-time >p').offset().top+$('.day-time >p').height();
+		$('.day-time .mui-scroll-wrapper').css({
+			'top':day_time_scroll_top,
+			'height':50+'px'
+		});
+		
+		
+		/*
+		 * 监听 只能选择一个时间
+		 */
+		$('.day-time .item').on('click',function(){
+			$('.day-time .item').removeClass('active');
+			$(this).addClass('active');
+		});
+		
+		
+		/*
+		 * week time 选择
+		 */
+		var week_time_top=$('.day-time .mui-scroll-wrapper').innerHeight()+20;
+		$('.week-time').css('margin-top',week_time_top);
+		
+		mui('.week-time .mui-scroll-wrapper').scroll({
+			deceleration: 0.0005,
+			scrollY: false, //是否竖向滚动
+			scrollX: true, //是否横向滚动
+			bounce: true, //是否启用回弹
+			indicators: false
+		});
+		
+		var week_time_scroll_top=$('.week-time >p').offset().top+$('.week-time >p').height();
+		$('.week-time .mui-scroll-wrapper').css({
+			'top':week_time_scroll_top,
+			'height':50+'px'
+		});
+		
+		/*
+		 * 点击事件
+		 */
+		$('.week-time .item').on('click',function(){
+			if($(this).hasClass('active')){
+				$(this).removeClass('active');
+			}else{
+				$(this).addClass('active');
+			}
+		});
+		
+		/*
+		 * 激励自己的话
+		 */
+		var foot_top=$('.week-time .mui-scroll-wrapper').innerHeight()+20;
+		$('.foot').css('margin-top',foot_top);
+		
+		
+		
+		
+		/*
+		 * 输出color 选择
+		 */
+		var color_box = new Vue({
+		  el: '#color-box',
+		  data: {
+		    colors: [
+		      { color: '#93e0f6' },
+		      { color: '#fc818e' },
+		      { color: 'deeppink' },
+		      { color: 'greenyellow' },
+		      { color: '#F5466B' },
+		      { color: 'sandybrown' },
+		      { color: 'powderblue' },
+		      { color: 'cyan' },
+		      { color: 'plum' }
+		    ]
+		  },
+		  methods:{
+		  	color_choose:function(event){
+		  		var color=$(event.target).attr('data-color');
+				$('.mui-content .head .img-wrapper').css('background',color);
+				$('.mui-content .head .img-wrapper').data('color',color);
+			}
+		  }
+		});
+		
+		/*
+		 * 输出icon选择
+		 */
+		var icon_box=new Vue({
+			el:'#icon-box',
+			data:{
+				icons:[1,2,3,4,5,6,7,8,9,10,11,12,13]
+			},
+			methods:{
+				icon_choose:function(event){
+					var icon=$(event.target).attr('src');
+					$('.mui-content .head .img-wrapper img').attr('src',icon);
+				}
+			}
+		});
+	</script>
+	
+	
+	<script src="js/config.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		$('#save').click(function(){
+			var week_time=[];
+			$('.week-time .active').each(function(){
+				week_time.push($(this).data('value'));
+			});
+			var data={
+				icon:$('.mui-content .head .img-wrapper img').attr('src'),
+				background:$('.mui-content .head .img-wrapper').data('color'),
+				day_time:$('.day-time .active').text().trim(),
+				week_time:week_time.join(','),
+				sentence:$('.foot input').val(),
+				name:$('.head input').val()
+			};
+			ajax_post('/habit',function(res){
+				if(res.status){
+					mui.openWindow({
+						url:'home.html?active=today',
+						id:'home'
+					})
+				}else{
+					mui.toast(res.data);
+				}
+			},data);
+		});
+	</script>
+
+</html>

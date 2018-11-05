@@ -1,0 +1,68 @@
+{
+  "login.html": {
+    "refer": [
+      "home.html"
+    ],
+    "resources": []
+  },
+  "home.html": {
+    "refer": [
+      "habits.html",
+      "cards.html",
+      "bills.html",
+      "plans.html",
+      "diarys.html",
+      "card.html"
+    ],
+    "resources": []
+  },
+  "habits.html": {
+    "refer": [
+      "home.html"
+    ],
+    "resources": []
+  },
+  "bills.html": {
+    "refer": [
+      "home.html"
+    ],
+    "resources": []
+  },
+  "cards.html": {
+    "refer": [
+      "home.html"
+    ],
+    "resources": []
+  },
+  "plans.html": {
+    "refer": [
+      "home.html",
+      "plan-add.html"
+    ],
+    "resources": []
+  },
+  "diarys.html": {
+    "refer": [
+      "home.html",
+      "diary-add.html"
+    ],
+    "resources": []
+  },
+  "card.html": {
+    "refer": [
+      "home.html"
+    ],
+    "resources": []
+  },
+  "plan-add.html": {
+    "refer": [
+      "plans.html"
+    ],
+    "resources": []
+  },
+  "diary-add.html": {
+    "refer": [
+      "diarys.html"
+    ]
+  }
+}

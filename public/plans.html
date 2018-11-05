@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		
+		<link rel="stylesheet" type="text/css" href="css/common.css"/>
+		<link rel="stylesheet" type="text/css" href="css/plans.css"/>
+		<script src="js/jquery.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/vue.js"></script>
+	</head>
+
+	<body>
+		
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">计划</h1>
+		</header>
+		
+		
+		<div class="button">
+			<a href="plan-add.html">
+				<img src="img/add.png"/>
+			</a>
+		</div>
+		
+		
+		<div class="mui-scroll-wrapper">
+		    <div class="mui-scroll">
+		    	
+		    	<div class="content" id="plans-box">
+		    		
+		    		<div class="item" v-for="item in items" v-bind:style="{background:item.color}">
+		    			<div class="intro">
+		    				{{item.content}}
+		    			</div>
+		    			<div class="time">
+		    				{{item.time}}
+		    			</div>
+		    		</div>
+		    		
+		    		
+		    	</div>
+		    	
+		    </div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		header_height=$('header').height();
+		scroll_height=$('.mui-scroll-wrapper').height()-header_height;
+		
+		
+		mui('.mui-scroll-wrapper').scroll({
+		deceleration: 0.0005, //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+			indicators: false,
+		});
+		
+		$('.mui-scroll-wrapper').css('top',header_height+'px');
+		$('.mui-scroll-wrapper').css('height',scroll_height+'px');
+	</script>
+	
+	
+	<script src="js/config.js"></script>
+	<script>
+		var plan_box = new Vue({
+		  el: '#plans-box',
+		  data: {
+		    items: [
+//		      {content:'sdd',time:'sds',color:'blue'}
+		    ]
+		  }
+		});
+		
+		var api=api_host+'/plan';
+		$.get(api,function(res){
+			if(res.status){
+				plan_box.$data.items=res.data;
+				setTimeout(set_postion,50);
+			}
+		});
+		
+		
+		function set_postion(){
+			var heightArr=[];
+			$('#plans-box .item').each(function(){
+				if(heightArr.length < 2){
+					heightArr.push($(this));	
+				}else{
+					var minIndex=heightArr[0].offset().top+heightArr[0].height() < heightArr[1].offset().top+heightArr[1].height() ? 0 : 1;
+					var height=heightArr[minIndex].offset().top+heightArr[minIndex].height();
+					$(this).css({
+						'position':'absolute',
+						'top':(height-15)+'px',
+						'left':heightArr[minIndex].offset().left+'px',
+						'width':'45.5%'
+					});
+					heightArr[minIndex]=$(this);
+				}
+			});
+		}
+		
+	</script>
+</html>

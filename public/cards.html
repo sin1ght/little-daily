@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="css/common.css"/>
+		<link rel="stylesheet" type="text/css" href="css/cards.css"/>
+		<script src="js/mui.min.js"></script>
+		<script src="js/jquery.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+	</head>
+
+	<body>
+		
+		<div class="mui-content" id="content">
+			<header class="mui-bar mui-bar-nav">
+			    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			    <h1 class="mui-title">我的卡片</h1>
+			</header>
+		
+			<!--卡片轮播-->
+			<div class="mui-slider">
+			  <div class="mui-slider-group">
+			  	
+			    <div class="mui-slider-item" v-for="card in cards">
+			    	
+			    	<div class="card">
+						<img :src="card.img"/>
+						<div class="wrapper">
+							<div class="msg">
+								<p>{{card.en}}</p>
+								<p>{{card.zh}}</p>
+							</div>
+							<div class="footer">
+								<img src="img/app_icon.png"/>
+								<p>小日常APP</p>
+								<div class="time">
+									<p>{{card.time.split(' ')[1]}}</p>
+									<p>{{card.time.split(' ')[0]}}</p>
+								</div>
+							</div>
+						</div>
+					</div>
+			    	
+			    </div>
+			    
+			 
+			    
+			  </div>
+			</div>
+			
+			
+			<div class="footer">
+				<p>{{cards.length}}张</p>
+				<p>[在{{new Date().getFullYear()}}年剩余的日子里继续加油]</p>
+			</div>
+			
+		</div>
+		
+		
+		
+		
+		
+	</body>
+	<script src="js/item_common.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		
+		var gallery = mui('.mui-slider');
+		gallery.slider({
+		  interval:0//自动轮播周期，若为0则不自动播放，默认为0；
+		});
+	</script>
+	
+	<script src="js/config.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var box=new Vue({
+			el:'#content',
+			data:{
+				cards:[]
+			}
+		});
+		
+		$.get(api_host+'/card',function(res){
+			if(res.status)
+				box.$data.cards=res.data;
+			else
+				mui.toast(res.data);
+		});
+		
+		
+	</script>
+	
+	
+</html>

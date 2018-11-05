@@ -1,0 +1,331 @@
+/*body{
+	font-family: "微软雅黑";
+}
+
+.mui-scroll-wrapper {
+	height: 100vh;
+}
+
+.mui-scroll{
+	padding: 10px;
+}
+
+p{
+	margin: 0;
+	color: black;
+}
+
+
+header.mui-bar{
+	background: pink;
+}*/
+
+body{
+	background:#efeff4;
+}
+
+
+/**
+ * 首页
+ */
+
+.mui-scroll-wrapper{
+	background: #f3e9eab3;
+}
+
+.mui-bar-tab .mui-tab-item.mui-active{
+	color: pink;
+}
+
+
+#shouye .mui-scroll .header{
+	height: 30px;
+	display: flex;
+	align-items: center;
+	font-size: 20px;
+}
+
+#shouye .mui-scroll .header span{
+	font-weight: bold;
+}
+
+#shouye .mui-scroll .segmentation{
+	width: 5px;
+	height:100%;
+	background: pink;
+	margin-right: 10px;
+}
+
+
+/*
+ * 今日头条
+ */
+#shouye .news .content .item{
+	display: flex;
+    background: white;
+    margin-top: 15px;
+    padding: 5px;
+    border-radius: 5px;
+    align-items: center;
+}
+
+
+#shouye .news .content .item img{
+	height: 80px;
+    /*width: 80px;*/
+    border-radius: 5px;
+    margin-right: 5px;
+}
+
+#shouye .news .content .item .title{
+	margin: 0;
+}
+
+
+/*
+ * 计划
+ */
+
+
+#shouye .plans{
+	margin-top: 20px;
+}
+
+#shouye .plans .item{
+	background: white;
+    margin-top: 15px;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+#shouye .plans .item p{
+	color:white;
+}
+
+
+/*
+ * 账单
+ */
+#shouye .bills{
+	margin-top: 20px;
+}
+
+#shouye .bills .content{
+	background: white;
+	padding: 10px;
+	margin-top: 15px;
+	border-radius:5px;
+}
+
+#shouye .bills .content .head{
+	color: gray;
+	font-size: 16px;
+}
+
+
+#shouye .bills .content .segmentation{
+	width: 100%;
+	border-bottom: 1px dashed #e3d9d9;
+	background:white;
+	margin-top: 5px;
+	margin-bottom: 10px;
+}
+
+
+#shouye .bills .content .foot{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+
+#shouye .bills .content .foot p:nth-child(2){
+	margin-left: 10px;
+	color: lightskyblue;
+}
+
+
+#shouye .bills .content .foot p:nth-child(3){
+	margin-left: 10px;
+	color: deeppink;
+}
+
+#shouye .bills .content .item{
+	display: flex;
+	margin-bottom: 10px;
+}
+
+#shouye .bills .content .item >img{
+	width: 20px;
+	height: 20px;
+}
+
+#shouye .bills .content .item p:nth-child(2){
+	width: 80%;
+	margin-left: 10px;
+}
+
+#shouye .bills .content .in p:nth-child(3){
+	color: lightskyblue;
+}
+
+#shouye .bills .content .out p:nth-child(3){
+	color: deeppink;
+}
+
+
+/*
+ * 日记
+ */
+
+#shouye .diarys{
+	margin-top:20px ;
+}
+
+#shouye .diarys .item{
+	margin-top: 15px;
+	background: white;
+	padding: 10px;
+	border-radius: 5px;
+}
+
+#shouye .diarys .item .head{
+	display: flex;
+}
+
+#shouye .diarys .item .head .title{
+	width: 85%;
+	font-size: 18px;
+	overflow: hidden;
+	text-overflow:ellipsis;
+	white-space:nowrap;
+	
+}
+
+#shouye .diarys .item .head .weather{
+	margin-right: 10px;
+}
+
+#shouye .diarys .item .remark{
+	margin-top:5px;
+	padding: 10px;
+	font-size: 16px;
+	color: #b1a8a8;
+}
+
+
+
+
+/*
+ * 今日习惯
+ */
+
+#today .mui-content .button{
+	width: 50px;
+	height: 50px;
+	background:pink;
+	position: fixed;
+	bottom: 70px;
+	right: 20px;
+	border-radius: 25px;
+	box-shadow: 0 2px 1px 1px #c1babac7;
+	z-index: 10;
+}
+
+#today .category{
+	margin-bottom: 20px;
+}
+
+#today .category .title{
+	background: #e8e3e4;
+	display: inline-block;
+	padding: 5px;
+	border-radius: 5px;
+	margin-bottom: 15px;
+}
+
+#today .category .content{
+	display: flex;
+	flex-wrap:wrap;
+}
+
+#today .category .content .item{
+	display:flex;
+	flex-direction: column;
+	align-items: center;
+	width:25%;
+}
+
+#today .category .content .item .img-wrapper{
+	width: 50px;
+	height: 50px;
+	border-radius:25px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 5px;
+}
+
+#today .category .content .item p:nth-child(3){
+	font-size: 12px;
+}
+
+
+/*打卡成功*/
+#today .category .content .item .img-wrapper.success .mask{
+	width: 50px;
+    height: 50px;
+    background: #887b7bb8;
+    position: absolute;
+    border-radius: 25px;
+}
+
+
+
+/*
+ * 
+ * 个人中心
+ */
+#user .mui-content .mui-scroll{
+	padding: 0;
+}
+
+#user .mui-content .header{
+	background: white;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	padding: 10px;
+}
+
+#user .mui-content .header img{
+	height: 80px;
+	width: 80px;
+	border-radius: 40px;
+	box-shadow: -1px 0 1px 1px #b7a2a2b3,1px 0 1px 1px #b7a2a2b3;
+}
+
+#user .mui-content .header .nickname{
+	margin-top: 10px;
+}
+
+#user .mui-content .mui-table-view{
+	margin-top: 20px;
+}
+
+#user .mui-content .mui-table-view .mui-navigate-right{
+	display: flex;
+	align-items: center;
+}
+
+#user .mui-content .mui-table-view .mui-table-view-cell::after{
+	background: white;
+}
+
+#user .mui-content .mui-table-view::after{
+	background: white;
+}
+
+#user .mui-content .mui-table-view::before{
+	background: white;
+}

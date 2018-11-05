@@ -1,0 +1,30 @@
+body{
+	font-family: "微软雅黑";
+	background: white;
+}
+
+p{
+	margin: 0;
+	color: black;
+}
+
+.mui-scroll-wrapper {
+	height: 100vh;
+}
+
+.mui-scroll{
+	padding: 10px;
+}
+
+header.mui-bar{
+	background: pink;
+}
+
+header.mui-bar a{
+	color: white;
+}
+
+header.mui-bar h1{
+	color: white;
+	font-weight:bold ;
+}

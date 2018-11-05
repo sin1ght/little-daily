@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <script src="js/mui.min.js"></script>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="css/common.css"/>
+    <link rel="stylesheet" type="text/css" href="css/index.css"/>
+    <script type="text/javascript" charset="utf-8">
+      	mui.init();
+    </script>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/config.js" ></script>
+</head>
+<body>	
+		<!--
+        	作者：offline
+        	时间：2018-09-17
+        	描述：底部导航
+        -->
+		<nav class="mui-bar mui-bar-tab">
+			<a class="mui-tab-item mui-active" href="#shouye">
+				<span class="mui-icon mui-icon-home"></span>
+				<span class="mui-tab-label">首页</span>
+			</a>
+			<a class="mui-tab-item" href="#today">
+				<span class="mui-icon mui-icon-flag"></span>
+				<span class="mui-tab-label">今日习惯</span>
+			</a>
+			<a class="mui-tab-item" href="#user">
+				<span class="mui-icon mui-icon-person"></span>
+				<span class="mui-tab-label">我的</span>
+			</a>
+		</nav>
+		
+		<!--
+        	作者：offline
+        	时间：2018-09-17
+        	描述：中间主体内容
+        -->
+		<div class="mui-content">
+			
+			
+			<!--
+            	作者：offline
+            	时间：2018-09-30
+            	描述：首页
+            -->
+			<div id="shouye" class="mui-control-content mui-active">
+				<header class="mui-bar mui-bar-nav">
+					<h1 class="mui-title" style="color: white;font-weight: bold;">小日常</h1>
+				</header>
+				<div class="mui-content">
+				    <div class="mui-scroll-wrapper">
+						<div class="mui-scroll">
+							
+							
+							<!--
+                            	作者：offline
+                            	时间：2018-09-28
+                            	描述：今日头条
+                            -->
+							<div class="news" id="news">
+								<div class="header">
+									<span class="segmentation"></span>
+									<span>今日头条</span>
+								</div>
+								<div class="content">
+									<div class="item" v-for="item in news">
+										<img :src="'http:'+item.cover_image_url"/>
+										<p class="title">
+											{{item.title}}
+										</p>
+									</div>
+									
+								</div>
+							</div>
+							
+							<!--
+                            	作者：offline
+                            	时间：2018-09-29
+                            	描述：计划
+                            -->
+                            <div class="plans" id="plans">
+								<div class="header">
+									<span class="segmentation"></span>
+									<span>近期计划</span>
+								</div>
+								<div class="content">
+									<div class="item" v-for="plan in plans" :style="{background:plan.color}">
+										<p>
+											{{plan.content}}
+										</p>
+									</div>
+									
+								</div>
+							</div>
+							
+							
+							<!--
+                            	作者：offline
+                            	时间：2018-09-29
+                            	描述：账单
+                            -->
+							<div class="bills" id="bills">
+								<div class="header">
+									<span class="segmentation"></span>
+									<span>近日账单</span>
+								</div>
+								<div class="content">
+									<div class="head">
+										{{bill.time}}
+									</div>
+									<div class="segmentation"></div>
+									
+									<div v-for="child in bill.content" class="item" :class="{in:child.type,out:!child.type}">
+										<img :src="child.img"/>
+										<p>{{child.category}}</p>
+										<p>{{child.type == 0 ?'-':'+'}}{{parseFloat(child.price*child.num).toFixed(2)}}</p>
+									</div>
+									
+									<div class="segmentation"></div>
+									<div class="foot">
+										<img src="img/money.png" />
+										<p>收入:{{parseFloat(bill.income).toFixed(2)}}</p>
+										<p>支出:{{parseFloat(bill.pay).toFixed(2)}}</p>
+									</div>
+									
+								</div>
+							</div>
+							
+							<!--
+                            	作者：offline
+                            	时间：2018-09-29
+                            	描述：日记
+                            -->
+							<div class="diarys" id="diarys">
+								<div class="header">
+									<span class="segmentation"></span>
+									<span>近日日记</span>
+								</div>
+								<div class="content">
+									<div class="item" v-for="diary in diarys">
+										<div class="head">
+											<p class="title">{{diary.title}}</p>
+											<img class="mood" :src="diary.mood"/>
+											<img class="weather" :src="diary.weather"/>
+										</div>
+										<div class="remark">
+											{{diary.content.slice(0,30)}}...
+										</div>
+									</div>
+								</div>
+							</div>
+							
+							
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			
+			<!--
+            	作者：offline
+            	时间：2018-09-30
+            	描述：今日习惯
+            -->
+			<div id="today" class="mui-control-content">
+				<header class="mui-bar mui-bar-nav">
+					<a class="mui-icon mui-icon-paperplane" style="color: white;" href="card.html"></a>
+					<h1 class="mui-title" style="color: white;font-weight: bold;">今日习惯</h1>
+				</header>
+				
+				<div class="mui-content">
+					<div class="button">
+						<a href="habit-add.html">
+							<img src="img/add.png"/>
+						</a>
+					</div>
+					
+					<div class="mui-scroll-wrapper">
+					    <div class="mui-scroll" id="habit-box">
+					 		
+					 		
+					 		<div class="category" v-for="(item,p_index) in habits" :data-pindex="p_index">
+								<p class="title">
+									{{item.category}}
+								</p>
+								
+								<div class="content">
+									<div class="item" v-for="(child,c_index) in item.content" :data-id="child.id" :data-cindex="c_index" @click="habitCheck">
+										<div :class="{success:child.todayCheck}" class="img-wrapper" :style="{background:child.background}">
+											<img :src="child.icon"/>
+											<div class="mask"></div>
+										</div>
+										<p>{{child.name}}</p>
+										<p>完成{{child.checks}}天</p>
+									</div>
+									
+								</div>
+							</div>
+							
+							
+					 		
+					 		
+					    </div>
+					</div>
+					
+				</div>
+			</div>
+			
+			
+			
+			<!--
+            	作者：offline
+            	时间：2018-09-30
+            	描述：个人中心
+            -->
+			<div id="user" class="mui-control-content">
+				<header class="mui-bar mui-bar-nav">
+					<h1 class="mui-title" style="color: white;font-weight: bold;">个人中心</h1>
+				</header>
+				
+				<div class="mui-content">
+					<div class="mui-scroll-wrapper">
+					    <div class="mui-scroll">
+					        
+					        <div class="header">
+					        	<img src="img/head.jpg"/>
+					        	<p class="nickname">
+					   				sinight
+					        	</p>
+					        </div>
+					        
+					        <ul class="mui-table-view mui-table-view-chevron">
+								<li class="mui-table-view-cell mui-media">
+									<a class="mui-navigate-right" href="habits.html">
+										<img class="mui-media-object mui-pull-left head-img" src="img/setting/habit.png">
+										<div class="mui-media-body">
+											<p class="mui-ellipsis">习惯</p>
+										</div>
+									</a>
+								</li>
+								<li class="mui-table-view-cell mui-media">
+									<a class="mui-navigate-right" href="cards.html">
+										<img class="mui-media-object mui-pull-left head-img" src="img/setting/card.png">
+										<div class="mui-media-body">
+											<p class="mui-ellipsis">卡包</p>
+										</div>
+									</a>
+								</li>
+								<li class="mui-table-view-cell mui-media">
+									<a class="mui-navigate-right" href="plans.html">
+										<img class="mui-media-object mui-pull-left head-img" src="img/setting/plan.png">
+										<div class="mui-media-body">
+											<p class="mui-ellipsis">计划</p>
+										</div>
+									</a>
+								</li>
+								<li class="mui-table-view-cell mui-media">
+									<a class="mui-navigate-right" href="diarys.html">
+										<img class="mui-media-object mui-pull-left head-img" src="img/setting/diary.png">
+										<div class="mui-media-body">
+											<p class="mui-ellipsis">日记</p>
+										</div>
+									</a>
+								</li>
+								<li class="mui-table-view-cell mui-media">
+									<a class="mui-navigate-right" href="bills.html">
+										<img class="mui-media-object mui-pull-left head-img" src="img/setting/bill.png">
+										<div class="mui-media-body">
+											<p class="mui-ellipsis">记账本</p>
+										</div>
+									</a>
+								</li>
+								<li class="mui-table-view-cell mui-media">
+									<a class="mui-navigate-right" href="#account">
+										<img class="mui-media-object mui-pull-left head-img" src="img/setting/msg.png">
+										<div class="mui-media-body">
+											<p class="mui-ellipsis">消息反馈</p>
+										</div>
+									</a>
+								</li>
+							</ul>
+					        
+					        
+					    </div>
+					</div>
+				</div>
+				
+		
+			</div>
+		
+		
+		</div>
+		<script type="text/javascript" src="js/index.js" ></script>
+		<script>
+			//设置 user页面昵称
+			$('#user .header .nickname').text(sessionStorage.getItem('account'));
+			
+			//当前显示那个tab
+			var activeTab=get_url_query_variable('active');
+			if(activeTab){
+				//页面
+				$('.mui-control-content').removeClass('mui-active');
+				$('#'+activeTab).addClass('mui-active');
+				//tab
+				$('.mui-tab-item').removeClass('mui-active');
+				$('.mui-tab-item[href$='+activeTab+']').addClass('mui-active');
+			}
+		</script>
+		
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			//首页
+			//今日头条
+			var newsBox=new Vue({
+				el:'#news',
+				data:{
+					news:[]
+				}
+			});
+			$.get(api_host+'/news',function(res){
+				newsBox.news=res.data.slice(2);
+			});
+			
+			//近期计划
+			var planBox=new Vue({
+				el:'#plans',
+				data:{
+					plans:[]
+				}
+			});
+			$.get(api_host+'/plan?limit=3',function(res){
+				if(res.status)
+					planBox.$data.plans=res.data;
+			});
+			//最近一天账单
+			var billBox=new Vue({
+				el:'#bills',
+				data:{
+					bill:{}
+				}
+			});
+			$.get(api_host+'/bill?latest=true',function(res){
+				billBox.$data.bill=res.data;
+			});
+			
+			//最近一篇日记
+			var diaryBox=new Vue({
+				el:'#diarys',
+				data:{
+					diarys:[]
+				}
+			});
+			
+			$.get(api_host+'/diary?limit=1',function(res){
+				diaryBox.$data.diarys=res.data;
+			});
+			
+			
+			
+			//今日习惯
+			var habitBox=new Vue({
+				el:'#habit-box',
+				data:{
+					habits:[]
+				},
+				methods:{
+					habitCheck:function(event){
+						var outter_vue=this;
+						var currentTarget=event.currentTarget;
+						var p_index=$(currentTarget).parents('.category').data('pindex');
+						var c_index=$(currentTarget).data('cindex');
+						//更新背景颜色
+						var wrapper=$(event.currentTarget).find('.img-wrapper');
+						if(wrapper.hasClass('success'))
+							outter_vue.$data.habits[p_index].content[c_index].todayCheck=0;
+						else
+							outter_vue.$data.habits[p_index].content[c_index].todayCheck=1;
+						
+						ajax_post('/check',function(res){
+							if(res.status){
+								mui.toast(res.data.msg);
+								var type=res.data.type; // 0 取消打卡 1 打卡成功
+								//更新次数
+//								var p_index=$(currentTarget).parents('.category').data('pindex');
+//								var c_index=$(currentTarget).data('cindex');
+								
+								if(type)
+									outter_vue.$data.habits[p_index].content[c_index].checks+=1;
+								else
+									outter_vue.$data.habits[p_index].content[c_index].checks-=1;
+							}else{
+								mui.toast(res.data);	
+							}
+						},{
+							habit_id:$(event.currentTarget).data('id')
+						});
+						
+					}
+				}
+			});
+			
+			$.get(api_host+'/habit?today=true',function(res){
+				if(res.status){
+					var tempData={};
+					var data=res.data;
+					
+					data.forEach(function(item){
+						if(!tempData.hasOwnProperty(item.day_time))
+							tempData[item.day_time]={
+								category:item.day_time,
+								content:[]
+							};
+						tempData[item.day_time].content.push(item);
+					});
+					
+					//更新vue数据
+					var tempArr=[];
+					for (key in tempData){
+						tempArr.push(tempData[key]);
+					}
+					habitBox.$data.habits=tempArr;
+				}else{
+					mui.toast(res.data);
+				}
+			});
+			
+		</script>
+</body>
+</html>

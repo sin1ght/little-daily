@@ -1,0 +1,248 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="css/common.css"/>
+		<link rel="stylesheet" type="text/css" href="css/bills.css"/>
+		<link rel="stylesheet" type="text/css" href="css/mui.picker.css"/>
+		<link rel="stylesheet" type="text/css" href="css/mui.dtpicker.css"/>
+		
+		
+		<script src="js/mui.min.js"></script>
+		<script src="js/jquery.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		<script src="js/mui.picker.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/mui.dtpicker.js" type="text/javascript" charset="utf-8"></script>
+		
+		<style>
+			.mui-dtpicker-header{
+				background: pink;
+			}
+			
+			.mui-dtpicker-header button[data-id=btn-cancel]{
+				border: 1px solid #fff;
+			}
+			
+			.mui-dtpicker-header button[data-id=btn-ok]{
+				border: 1px solid #f98190;
+    			background-color: #f98190;
+			}
+			
+			.mui-dtpicker-title{
+				display: none;
+			}
+			
+			.mui-picker{
+				background: pink;
+			}
+			
+			.mui-picker .mui-picker-inner{
+				background: #f9dfe4;
+			}
+		</style>
+	</head>
+
+	<body>
+		
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">2018年9月</h1>
+		</header>
+		
+		
+		<div class="button">
+			<a href="bill-add.html">
+				<img src="img/add.png"/>
+			</a>
+		</div>
+		
+		
+		<div class="head">
+			<div class="in">
+				<p>0.00</p>
+				<p>收入(元)</p>
+			</div>
+			<div class="out">
+				<p>0.00</p>
+				<p>支出(元)</p>
+			</div>
+			<div class="diff">
+				<p>0.00</p>
+				<p>收支差额(元)</p>
+			</div>
+		</div>
+		
+		
+		<div class="indicator"></div>
+		
+		
+		<div class="mui-scroll-wrapper">
+		    <div class="mui-scroll" id="box">
+		    	
+		        <!--<div class="item">
+		        	<div class="title">
+		        		<p>10月11日 星期四</p>
+		        		<p>支出88.00，收入:22.00</p>
+		        	</div>
+		        	<div class="content">
+		        		<div class="in content-item">
+		        			<img src="img/money-5.png"/>
+							<p>工资</p>
+							<p>+22.00</p>
+		        		</div>
+		        		<div class="out content-item">
+		        			<img src="img/food.png"/>
+							<p>餐饮</p>
+							<p>-88.00</p>
+		        		</div>
+		        	</div>
+		        </div>-->
+		        <div class="item" v-for="item in bills">
+		        	<div class="title">
+		        		<p>{{item.time}}</p>
+		        		<p>支出{{parseFloat(item.pay).toFixed(2)}}，收入:{{parseFloat(item.income).toFixed(2)}}</p>
+		        	</div>
+		        	<div class="content" v-for="child in item.content">
+		        		<div :class="{in:child.type,out:!child.type}" class="content-item">
+		        			<img :src="child.img"/>
+							<p>{{child.category}}</p>
+							<p>{{child.type == 0 ?'-':'+'}}{{parseFloat(child.price*child.num).toFixed(2)}}</p>
+		        		</div>
+		        	</div>
+		        </div>
+		        
+		        
+		    </div>
+		</div>
+		
+		
+		
+		
+		
+		
+	</body>
+	<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var box=new Vue({
+			el:'#box',
+			data:{
+				bills:[]
+			}
+		});
+	</script>
+	<script src="js/config.js" type="text/javascript" charset="utf-8"></script>
+	<script>
+		//根据月份获取账单
+		function refresh(){
+			var time=$('header .mui-title').text();
+			var api=api_host+'/bill?time='+time;
+			$.get(api,function(res){
+				if(res.status){
+					var data=res.data;
+					var income=0,pay=0;
+					var tempData={};
+					data.forEach(function(item){
+						if(item.type==0){
+							//支出
+							pay+=item.price*item.num;
+						}else{
+							//收入
+							income+=item.price*item.num;
+						}
+						var monthDayTime=item.time.split(' ')[0].slice(5)
+						var weekDay=item.time.split(' ')[1];
+						if(tempData.hasOwnProperty(monthDayTime)){
+							
+						}else{
+							tempData[monthDayTime]={
+								time:monthDayTime+' '+weekDay,
+								income:0.00,
+								pay:0.00,
+								content:[]
+							};
+						}
+						if(item.type==0)//支出
+							tempData[monthDayTime].pay+=item.price*item.num;
+						else //收入
+							tempData[monthDayTime].income+=item.price*item.num;
+						tempData[monthDayTime].content.push(item);
+					});
+					//console.log(tempData);
+					
+					//更新顶部收入支出
+					$('.head .in p:first-child').text(parseFloat(income).toFixed(2));
+					$('.head .out p:first-child').text(parseFloat(pay).toFixed(2));
+					$('.head .diff p:first-child').text(parseFloat(income-pay).toFixed(2));
+					
+					//更新vue数据
+					var tempArr=[];
+					for(key in tempData){
+						tempArr.push(tempData[key]);
+					}
+					box.$data.bills=tempArr;
+				}else{
+					mui.toast(res.data);
+				}
+			});
+		}
+	
+	</script>
+	<script type="text/javascript">
+		/*
+		 * 头部
+		 */
+		header_height=$('header').height();
+		$('.head').css('margin-top',header_height+'px');
+		
+		
+		/*
+		 * 滚动区域
+		 */
+		header_height=$('header').height()+$('.head').innerHeight()+$('.indicator').innerHeight()+1;
+		scroll_height=$('.mui-scroll-wrapper').height()-header_height;
+		
+		
+		mui('.mui-scroll-wrapper').scroll({
+		deceleration: 0.0005, //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+			indicators: false,
+		});
+		
+		$('.mui-scroll-wrapper').css('top',header_height+'px');
+		$('.mui-scroll-wrapper').css('height',scroll_height+'px');
+		
+		/*
+		 * 标题时间
+		 */
+		var date=new Date();
+		$('header .mui-title').text(date.getFullYear()+'年'+(date.getMonth()+1)+'月');
+		
+		/*
+		 * 时间选择器
+		 */
+		$('header .mui-title').click(function(){
+			var dtPicker = new mui.DtPicker({
+				type:'month'
+			});
+		    dtPicker.show(function (selectItems) {
+		        $('header .mui-title').text(selectItems.y.value+'年'+selectItems.m.value+'月');
+		        
+		        //刷新数据
+		        refresh();
+		    })
+		});
+		
+		/*
+		 * 获取当月账单
+		 */
+		refresh();
+	</script>
+	
+	
+	
+</html>

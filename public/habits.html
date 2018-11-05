@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="css/common.css"/>
+		<link rel="stylesheet" type="text/css" href="css/habits.css"/>
+		<script src="js/jquery.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" charset="utf-8">
+      		mui.init();
+    	</script>
+	</head>
+
+	<body>
+		
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">全部习惯</h1>
+		</header>
+		
+		<div class="mui-scroll-wrapper">
+		    <div class="mui-scroll" id="box">
+		    	
+		    	
+		        <div v-for="item in items" class="item" :style="{background:item.background}">
+		        	<img :src="item.icon"/>
+		        	<div class="info">
+		        		<p>{{item.name}}</p>
+		        		<p>{{item.sentence}}</p>
+		        	</div>
+		        	<div class="time">
+		        		<p>{{item.checks}}天</p>
+		        		<p>共坚持</p>
+		        	</div>
+		        </div>
+		        
+		        
+		    </div>
+		</div>
+		
+	</body>
+	
+	
+	<script type="text/javascript">
+		header_height=$('header').height();
+		scroll_height=$('.mui-scroll-wrapper').height()-header_height;
+		
+		
+		mui('.mui-scroll-wrapper').scroll({
+		deceleration: 0.0005, //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+			indicators: false,
+		});
+		
+		$('.mui-scroll-wrapper').css('top',header_height+'px');
+		$('.mui-scroll-wrapper').css('height',scroll_height+'px');
+	</script>
+	
+	<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/config.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var box=new Vue({
+			el:'#box',
+			data:{
+				items:[]
+			}
+		});
+		
+		$.get(api_host+'/habit',function(res){
+			if(res.status){
+				box.$data.items=res.data;
+			}else{
+				mui.toast(res.data);
+			}
+		});
+	</script>
+	
+</html>

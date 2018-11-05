@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="css/mui.picker.css"/>
+		<link rel="stylesheet" type="text/css" href="css/mui.poppicker.css"/>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		<script src="js/mui.picker.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/mui.poppicker.js" type="text/javascript" charset="utf-8"></script>
+		
+		<script src="js/jquery.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" type="text/css" href="css/common.css"/>
+		
+		<style type="text/css">
+			.mui-content{
+				height: 100vh;
+				background: #f3e9eab3;
+			}
+			
+			form{
+				margin-top: 20px;
+			}
+			
+			form input{
+				text-align: end;
+			}
+			
+			form .category{
+				display: flex;
+				justify-content: flex-end;
+				align-items: center;
+				height: 100%;
+				padding-right: 15px;
+			}
+			
+			form .category img{
+				margin-right: 10px;
+			}
+			
+			form .type{
+				height: 100%;
+				display: flex;
+				justify-content: flex-end;
+				align-items: center;
+				padding-right: 15px;
+			}
+		</style>
+		
+		<style type="text/css">
+			.mui-poppicker-header{
+				background: pink;
+			}
+			
+			.mui-poppicker-btn-cancel{
+				border: 1px solid #fff;
+			}
+			
+			.mui-poppicker-btn-ok{
+				border: 1px solid #f98190;
+    			background-color: #f98190;
+			}
+			
+			.mui-poppicker-body .mui-picker{
+				background: pink;
+			}
+			
+			.mui-picker-inner{
+				background: #f9dfe4;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">添加记录</h1>
+		    <a class="mui-icon mui-icon-checkmarkempty mui-pull-right" id="save"></a>
+		</header>
+		
+		<div class="mui-content">
+			
+			<form class="mui-input-group">
+				<div class="mui-input-row">
+			        <label>类型</label>
+			    	<div class="type" data-type='0'>
+			    		支出
+			    	</div>
+			    </div>
+			    <div class="mui-input-row">
+			        <label>单价</label>
+			    	<input type="text" name="money" class="mui-input-clear" placeholder="0.00">
+			    </div>
+			    <div class="mui-input-row">
+			        <label>数量</label>
+			        <input type="text" name="num" class="mui-input-clear" value="1">
+			    </div>
+			    <div class="mui-input-row">
+			        <label>类别</label>
+			        <div class="category">
+			        	<img src="img/bill/other.png"/>
+			        	<div>一般</div>
+			        </div>
+			    </div>
+			    <div class="mui-input-row">
+			        <label>备注</label>
+			        <input type="text" name="extra" class="mui-input-clear">
+			    </div>
+			    
+			</form>
+			
+		</div>
+		
+	
+	</body>
+	<script type="text/javascript">
+		/*
+		 * 账单类型选择
+		 */
+		 $('form .type').on('click',function(){
+		 	var picker = new mui.PopPicker();
+		 	picker.setData([
+		 		{value:'0',text:'支出'},
+		 		{value:'1',text:'收入'}
+		 	]);
+		 	picker.show(function(selectItems){
+		 		var val=selectItems[0].value;
+		 		var text=selectItems[0].text;
+		 		
+		 		$('form .type').attr({
+		 			'data-type':val
+		 		});
+		 		$('form .type').text(text);
+		 	});
+		 });
+		 
+		 /*
+		  * 消费类别选择
+		  */
+		 $('form .category').on('click',function(){
+		 	var picker = new mui.PopPicker();
+		 	var data=[
+		 		{text:'一般',img:'other.png'},
+		 		{text:'购物',img:'clothing.png'},
+		 		{text:'餐饮',img:'food.png'},
+		 		{text:'工资',img:'money-5.png'}
+		 	];
+		 	picker.setData(data);
+		 	
+		 	picker.show(function(selectItems){
+		 		var img=selectItems[0].img;
+		 		var text=selectItems[0].text;
+		 		
+		 		$('form .category img').attr('src','img/bill/'+img);
+		 		$('form .category div').text(text);
+		 	});
+		 });
+
+	</script>
+	
+	<script src="js/config.js" type="text/javascript" charset="utf-8"></script>
+	<script>
+		//添加记录
+		$('#save').click(function(){
+			var data={
+				type:$('.type').data('type'),
+				price:$('input[name=money]').val(),
+				num:$('input[name=num]').val(),
+				category:$('.category >div').text(),
+				img:$('.category img').attr('src'),
+				extra:$('input[name=extra]').val()
+			};
+			
+			ajax_post('/bill',function(res){
+				if(res.status){
+					mui.openWindow({
+						url:'bills.html',
+						id:'bills'
+					});
+				}else{
+					mui.toast(res.data);
+				}
+			},data);
+		});
+	</script>
+</html>

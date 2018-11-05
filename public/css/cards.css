@@ -1,0 +1,86 @@
+body{
+	background: #efeff4;
+}
+
+p{
+	color: black;
+	font-size: 10px;
+	margin: 0px;
+}
+
+.mui-slider-group{
+	height: 70vh;
+	padding-top: 50px;
+}
+
+.mui-slider-item{
+	padding: 10px;
+}
+
+
+.card{
+	margin-left: 40px;
+	margin-right: 40px;
+	border-radius: 5px;
+	overflow: hidden;
+	box-shadow: 0px 0px 10px 1px #c0bbbb;
+	height: 100%;
+	background: white;
+}
+
+.card>img{
+	width:100%;
+	height: 75%;
+}
+
+.card .wrapper{
+	padding: 10px;
+	padding-top: 0;
+}
+
+
+.card .footer{
+	display: flex;
+	align-items: center;
+}
+
+
+.card .footer>p{
+	width: 55%;
+	margin-left: 10px;
+}
+
+.card .footer>img{
+	width: 40px !important;
+	height: 40px;
+}
+
+.card .footer .time{
+	display: flex;
+	flex-direction: column;
+	align-items:  flex-end;
+}
+
+
+
+#content>.footer{
+	height: 15vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	margin-top:7vh;
+}
+
+#content>.footer p{
+	margin-bottom: 10px;
+}
+
+#content>.footer p:first-child{
+	font-size: 18px;
+	font-weight: bold;
+}
+
+#content>.footer p:last-child{
+	font-size: 14px;
+}

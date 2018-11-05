@@ -1,0 +1,79 @@
+body{
+	background: pink;
+}
+
+.mui-bar-nav{
+	-webkit-box-shadow:none;
+	box-shadow:none;
+}
+
+.mui-bar{
+	-webkit-box-shadow: none;
+	box-shadow:none;
+}
+
+
+.head{
+	background: white;
+	padding: 10px;
+	border-radius: 20px 20px 0 0;
+	display: flex;
+	align-items: center;
+}
+
+.head .time{
+	display: flex;
+	align-items: center;
+	color: pink;
+	width: 60%;
+}
+
+.head .time p{
+	color: pink;
+}
+
+.head .time .day{
+	font-size:40px;
+	margin-right: 5px;
+}
+
+.head .img{
+	width: 40%;
+	display: flex;
+	justify-content: flex-end;
+}
+
+.head .img img{
+	margin: 5px;
+}
+
+
+.mui-scroll-wrapper{
+	background: #f5edee;
+}
+
+.mui-scroll-wrapper .title{
+	color: gray;
+	border: none;
+	margin: 0;
+	padding: 0;
+	background: #f5edee;
+	font-size:20px;
+}
+
+.mui-scroll-wrapper .segmentation{
+	width: 100%;
+	border-bottom: 1px dashed gray;
+	background: white;
+	margin-bottom: 5px;
+}
+
+.mui-scroll-wrapper textarea{
+	margin: 0;
+	padding: 0;
+	border: none;
+	background:#f5edee;
+	overflow-y:hidden;
+	color: gray;
+	font-size:18px;
+}

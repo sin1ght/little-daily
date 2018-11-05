@@ -1,0 +1,191 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="css/common.css"/>
+		<link rel="stylesheet" type="text/css" href="css/diary-add.css"/>
+		<link rel="stylesheet" type="text/css" href="css/mui.picker.css"/>
+		<link rel="stylesheet" type="text/css" href="css/mui.poppicker.css"/>
+		
+		<script src="js/mui.min.js"></script>
+		<script src="js/jquery.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		<script src="js/mui.picker.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/mui.poppicker.js" type="text/javascript" charset="utf-8"></script>
+		
+		<style type="text/css">
+			.mui-poppicker-header{
+				background: pink;
+			}
+			
+			.mui-poppicker-btn-cancel{
+				border: 1px solid #fff;
+			}
+			
+			.mui-poppicker-btn-ok{
+				border: 1px solid #f98190;
+    			background-color: #f98190;
+			}
+			
+			.mui-poppicker-body .mui-picker{
+				background: pink;
+			}
+			
+			.mui-picker-inner{
+				background: #f9dfe4;
+			}
+			
+		</style>
+		
+	</head>
+
+	<body>
+		
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <a class="mui-icon mui-icon-checkmarkempty mui-pull-right" id="save"></a>
+		</header>
+		
+		<div class="head">
+			<div class="time">
+				<div class="day">
+					10
+				</div>
+				<div class="other">
+					<p>周1</p>
+					<p>2018年10月</p>
+				</div>
+			</div>
+			<div class="img">
+				<img id="mood" src="img/mood/smile.png"/>		
+				<img id='weather' src="img/weather/fine.png"/>
+			</div>
+		</div>
+		
+		
+		<!--日记内容-->
+		<div class="mui-scroll-wrapper">
+		    <div class="mui-scroll">
+		        
+		        <input type="text" class="title" value="标题" id="title"></input>
+		        <div class="segmentation"></div>
+		        
+		        <textarea class="content" rows="" cols=""></textarea>
+		        
+		    </div>
+		</div>
+		
+		
+		
+	</body>
+	<script type="text/javascript">
+		/*
+		 * 头部
+		 */
+		header_height=$('header').height();
+		$('.head').css('margin-top',header_height+'px');
+		
+		/*
+		 * 滑动区域
+		 */
+		header_height=$('header').height()+$('.head').innerHeight();
+		scroll_height=$('.mui-scroll-wrapper').height()-header_height;
+		
+		
+		mui('.mui-scroll-wrapper').scroll({
+		deceleration: 0.0005, //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+			indicators: false,
+		});
+		
+		$('.mui-scroll-wrapper').css('top',header_height+'px');
+		$('.mui-scroll-wrapper').css('height',scroll_height+'px');
+		
+		
+		
+		/*
+		 * 文字区域高度
+		 */
+		var textarea_height=$('.mui-scroll-wrapper').height()-$('.mui-scroll-wrapper .title').height()-30;
+		$('textarea').css('height',textarea_height+'px')
+		
+		
+		/*
+		 * 时间
+		 */
+		var date=new Date();
+		var weekArr=["周日","周一","周二","周三","周四","周五","周六"];
+		$('.head .time .other p:first-child').text(weekArr[date.getDay()]);
+		$('.head .time .other p:last-child').text(date.getFullYear()+'年'+(date.getMonth()+1)+'月');
+		var day=date.getDate()>=10?date.getDate():'0'+date.getDate();
+		$('.head .time .day').text(day);
+		
+		
+		/*
+		 * 心情 天气选择
+		 */
+		$('#mood').click(function(){
+			 var picker = new mui.PopPicker();
+			 var data=[
+			 	{text:'微笑',value:'smile.png'},
+			 	{text:'鬼脸',value:'face.png'},
+			 	{text:'晕',value:'dizzy.png'},
+			 	{text:'哭',value:'cry.png'},
+			 	{text:'迷惑',value:'confuse.png'},
+			 	{text:'生气',value:'angry.png'}
+			 ];
+			 picker.setData(data);
+			 picker.show(function (selectItems) {
+			 	$('#mood').attr('src','img/mood/'+selectItems[0].value);
+			 });
+		});
+		
+		$('#weather').click(function(){
+			 var picker = new mui.PopPicker();
+			 var data=[
+			 	{text:'晴',value:'fine.png'},
+			 	{text:'多云',value:'cloudy.png'},
+			 	{text:'风',value:'wind.png'},
+			 	{text:'雪',value:'snow.png'},
+			 	{text:'阴',value:'shade.png'},
+			 	{text:'雨',value:'rain.png'}
+			 ];
+			 picker.setData(data);
+			 picker.show(function (selectItems) {
+			 	$('#weather').attr('src','img/weather/'+selectItems[0].value);
+			 });
+		});
+		
+		
+	</script>
+	
+	<script src="js/config.js"></script>
+	<script type="text/javascript">
+		$('#save').click(function(){
+			var data={
+				title:$('#title').val(),
+				content:$('textarea').val(),
+				weather:$('#weather').attr('src'),
+				mood:$('#mood').attr('src')
+			};
+			
+			ajax_post('/diary',function(res){
+				if(res.status){
+					mui.toast('ok');
+					mui.openWindow({
+						url:'diarys.html',
+						id:'diarys'
+					});
+				}else{
+					mui.toast('ok');
+				}
+			},data);
+			
+		});
+	</script>
+</html>

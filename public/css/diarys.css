@@ -1,0 +1,63 @@
+body{
+	background: pink;
+}
+
+.mui-bar-nav{
+	-webkit-box-shadow:none;
+	box-shadow:none;
+}
+
+.mui-bar{
+	-webkit-box-shadow: none;
+	box-shadow:none;
+}
+
+.mui-scroll-wrapper{
+	background:#f5edee;
+	border-radius: 20px 20px 0 0;
+}
+
+.mui-scroll > .title{
+	margin-bottom: 20px;
+}
+
+
+.content .item{
+	background: white;
+	padding: 10px;
+	border-radius: 5px;
+	box-shadow: 0 0 4px 2px #e3d5d599;
+	margin-bottom: 20px;
+}
+
+.content .item .head>p{
+	font-size: 12px;
+	color: gray;
+}
+
+
+.content .item .title{
+	overflow: hidden;
+	padding-right: 40px;
+	text-overflow:ellipsis;
+	white-space:nowrap;
+}
+
+.content .item .intro{
+	font-size: 14px;
+	margin-top: 5px;
+	color: #5d5a5a;
+}
+
+
+.button{
+	width: 50px;
+	height: 50px;
+	background:pink;
+	position: fixed;
+	border-radius: 25px;
+	box-shadow: 0 2px 1px 1px #c1babac7;
+	bottom: 50px;
+	right: 30px;
+	z-index: 10;
+}

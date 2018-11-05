@@ -1,0 +1,136 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="css/common.css"/>
+		<link rel="stylesheet" type="text/css" href="css/card.css"/>
+		<script type="text/javascript" src="js/jquery.js"></script>
+		
+		<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init();
+		</script>
+		<script src="js/web-storage-cache.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+
+	<body>
+		
+		<div class="mui-content" id="content">
+			
+			<header class="mui-bar mui-bar-nav">
+			    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			    <h1 class="mui-title">今日卡片</h1>
+			</header>
+			
+			<div class="info">
+				今天还需要完成<span style="color: #f7395a;font-weight: bold;">{{info.needChecks}}</span>个习惯来获得卡片。
+			</div>
+			
+			<div class="card">
+				<img :src="card.img"/>
+				<div class="wrapper">
+					<div class="msg">
+						<p>{{card.sentence.en}}</p>
+						<p>{{card.sentence.zh}}</p>
+					</div>
+					<div class="footer">
+						<img src="img/app_icon.png"/>
+						<p>小日常APP</p>
+						<div class="time">
+							<p>{{card.time.split(' ')[1]}}</p>
+							<p>{{card.time.split(' ')[0]}}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="button_wrapper">
+				<div class="button" id="pick" v-if="info.pick" style="background: #d6d5d5;box-shadow: 1px 1px 1px 1px #b2b7b7;">
+					已领取
+				</div>
+				<div class="button" id="pick" v-else="info.pick">
+					领取
+				</div>
+			</div>
+			
+			
+		</div>
+		
+	</body>
+	<script src="js/item_common.js" type="text/javascript" charset="utf-8"></script>
+	
+	<script src="js/config.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var box=new Vue({
+			el:'#content',
+			data:{
+				card:{
+					img:"",
+					sentence:{
+						zh:"我从来不回头看，因为那样会让我对现在分心。",
+						en:" I never look back. It distracts from the now."	
+					},
+					time:"",
+				},
+				info:{
+					needChecks:4,
+					pick:0
+				}
+			}
+		});
+		
+		/*
+		 * 今日卡片
+		 */
+		var wsCache = new WebStorageCache();
+		if(wsCache.get('card')){
+			box.$data.card=wsCache.get('card');
+		}else{
+			$.get(api_host+'/card/today',function(res){
+				if(res.status){
+					box.$data.card=res.data;
+					var date=new Date();
+					date.setHours(24);
+					date.setMinutes(0); //设置晚上12点 过期
+					wsCache.set('card',res.data,{exp :date});
+				}else{
+					mui.toast(res.data);
+				}
+			});
+		}
+		
+		//基本信息
+		$.get(api_host+'/card/info',function(res){
+			box.$data.info=res.data;
+		});
+		
+		/*
+		 * 领卡
+		 */
+		$('#pick').click(function(){
+			if(!box.$data.info.pick){
+				ajax_post('/card',function(res){
+					mui.toast(res.data);
+					if(res.status){//领卡成功
+						box.$data.info.pick=1;
+					}
+				},box.$data.card);
+			}
+		});
+		
+		/*
+		 * 返回
+		 */
+		
+	</script>
+	<script type="text/javascript">
+		button_wrapper_height=$(document).height()-($('.card').height()+$('.card').offset().top);
+		$('.button_wrapper').css('height',button_wrapper_height+'px');
+	</script>
+	
+</html>
